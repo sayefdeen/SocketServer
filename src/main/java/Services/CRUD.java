@@ -10,5 +10,5 @@ public interface CRUD<T> {
 
     public void delete(int id) ;
 
-    public void get(String id) ;
+    public T get(String id) throws Exception;
 }

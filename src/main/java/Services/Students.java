@@ -34,8 +34,8 @@ public class Students implements CRUD{
     }
 
     @Override
-    public void get(String id) {
-
+    public Object get(String id) {
+        return new Object();
     }
 
     public DAO.Students getUser(String userName) throws Exception{

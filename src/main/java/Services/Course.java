@@ -27,8 +27,25 @@ public class Course implements CRUD{
     }
 
     @Override
-    public void get(String id) {
+    public Object get(String id) throws Exception {
+        DAO.Course course = null;
+        Connection con = ConnectionPool.getConnection();
+        String selectQuery = "select uuid,name,section,SUM(uni.stu_cou.`result`) as sum,avg(uni.stu_cou.`result`) as avg,min(uni.stu_cou.`result`) as min,max(uni.stu_cou.`result`) as max from uni.courses inner join uni.stu_cou on uni.courses.id  = uni.stu_cou.c_id where uni.courses.uuid  = ?";
+        PreparedStatement ps = con.prepareStatement(selectQuery);
+        ps.setString(1,id);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            course = new DAO.Course();
+            course.setId(rs.getString("uuid"));
+            course.setName(rs.getString("name"));
+            course.setSection(rs.getString("section"));
+            course.setSum(rs.getDouble("sum"));
+            course.setAvg(rs.getDouble("avg"));
+            course.setMax(rs.getDouble("max"));
+            course.setMin(rs.getDouble("min"));
 
+        }
+        return course;
     }
 
     public ArrayList<DAO.Course> getCourses(String userId) throws Exception{

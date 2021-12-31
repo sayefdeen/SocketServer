@@ -37,6 +37,11 @@ public class Screen {
         return new Students(userName,password,choice.equals("register"));
     }
 
+    public String courseId(){
+        System.out.println("Please Enter course ID");
+        return input.next();
+    }
+
 
     public String choices(){
         System.out.println("Please select from the following \n" +

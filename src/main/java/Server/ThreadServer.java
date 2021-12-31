@@ -64,14 +64,16 @@ public class ThreadServer extends Thread {
     }
 
     private void studentChoices(String choice,String userId) throws Exception {
-        switch (choice){
+        String message = choice.split(",")[0];
+        switch (message){
             case "seeALL":
-                System.out.println("We are here now");
                 ArrayList<Course> course = new Services.Course().getCourses(userId);
                 out.writeObject(course);
                 break;
             case "select":
-
+                String courseId = choice.split(",")[1];
+                Course course1 = (Course) new Services.Course().get(courseId);
+                out.writeObject(course1);
         }
     }
 }
