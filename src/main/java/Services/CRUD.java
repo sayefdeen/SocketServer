@@ -1,5 +1,7 @@
 package Services;
 
+import java.util.UUID;
+
 public interface CRUD<T> {
 
     public void add(T object) throws Exception;
@@ -8,5 +10,5 @@ public interface CRUD<T> {
 
     public void delete(int id) ;
 
-    public void get(int id) ;
+    public void get(String id) ;
 }

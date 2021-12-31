@@ -28,6 +28,7 @@ CREATE TABLE if not exists stu_cou
 (
     id serial auto_increment,
     s_id  int REFERENCES students (id) ON UPDATE CASCADE  ON DELETE  CASCADE ,
-    c_id  int REFERENCES courses (id) ON UPDATE CASCADE  ON DELETE  CASCADE
+    c_id  int REFERENCES courses (id) ON UPDATE CASCADE  ON DELETE  CASCADE,
+    result int
 )
 

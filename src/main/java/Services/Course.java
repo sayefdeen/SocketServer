@@ -3,6 +3,10 @@ package Services;
 import DataBase.ConnectionPool;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class Course implements CRUD{
 
@@ -23,7 +27,27 @@ public class Course implements CRUD{
     }
 
     @Override
-    public void get(int id) {
+    public void get(String id) {
 
     }
+
+    public ArrayList<DAO.Course> getCourses(String userId) throws Exception{
+        ArrayList<DAO.Course> courses = new ArrayList<>();
+
+        Connection con  = ConnectionPool.getConnection();
+        String selectQuery = "select uuid,name,section,result from uni.courses inner join uni.stu_cou on uni.courses.id = uni.stu_cou.c_id where uni.stu_cou.s_id = (select uni.students.id from uni.students inner join uni.users on uni.students.u_id = uni.users.id where uni.users.uuid = ? )";
+        PreparedStatement ps = con.prepareStatement(selectQuery);
+        ps.setString(1,userId);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            DAO.Course course = new DAO.Course();
+            course.setId(rs.getString("uuid"));
+            course.setName(rs.getString("name"));
+            course.setSection(rs.getString("section"));
+            course.setResult(rs.getInt("result"));
+            courses.add(course);
+        }
+        return courses;
+    }
+
 }
