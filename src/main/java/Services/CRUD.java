@@ -1,12 +1,12 @@
 package Services;
 
-public interface CRUD {
+public interface CRUD<T> {
 
-    public void add();
+    public void add(T object) throws Exception;
 
-    public void update(int id);
+    public void update(int id) ;
 
-    public void delete(int id);
+    public void delete(int id) ;
 
-    public void create(int id);
+    public void get(int id) ;
 }
