@@ -51,8 +51,11 @@ public class ThreadServer extends Thread {
                 if(student != null){
                     if(sService.checkPass(user.getPassword(),student.getPassword())){
                         stringOut.println("Next");
-                        String message =  stringIn.readLine();
+                        while(clientSocket.isConnected()){
+                            String message =  stringIn.readLine();
                             studentChoices(message,student.getId());
+                        }
+
                     }else{
                         stringOut.println("Wrong password/userName");
                     }
@@ -74,6 +77,14 @@ public class ThreadServer extends Thread {
                 String courseId = choice.split(",")[1];
                 Course course1 = (Course) new Services.Course().get(courseId);
                 out.writeObject(course1);
+                break;
+            case "exit":
+                stringOut.println("exit");
+                break;
         }
+    }
+
+    private void closeClient(){
+
     }
 }

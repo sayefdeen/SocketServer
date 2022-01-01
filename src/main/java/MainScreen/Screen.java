@@ -24,7 +24,8 @@ public class Screen {
     public String mainMessage(){
         System.out.println("Please type one of the following \n" +
                 "1- 'register' To register \n" +
-                "2- 'singIn' To signIn");
+                "2- 'singIn' To signIn\n" +
+                "3- 'exit' to stop the program'");
         return input.next();
     }
 
@@ -45,9 +46,9 @@ public class Screen {
 
     public String choices(){
         System.out.println("Please select from the following \n" +
-                "seeALL To see all your marks\n" +
-                "select To select one course\n" +
-                "0 to logout");
+                "'seeALL' To see all your marks\n" +
+                "'select' To select one course\n" +
+                "'exit' to logout");
         return input.next();
     }
 }

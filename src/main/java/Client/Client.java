@@ -28,6 +28,10 @@ public class Client {
 
     private void startingPoint() throws Exception {
         String message = mainMessage();
+        if(message.equalsIgnoreCase("exit")){
+            stopConnection();
+            return;
+        }
         Students student =  Screen.getScreen(clientSocket).logIn(message);
         stringOut.println(message);
         out.writeObject(student);
@@ -52,20 +56,27 @@ public class Client {
                 startingPoint();
                 break;
             case "Next" :
-                NextScreen();
+                nextScreen();
                 break;
+            case "exit":
+                stopConnection();
         }
     }
 
-    private void NextScreen() throws Exception {
+    private void nextScreen() throws Exception {
         String message = Screen.getScreen(clientSocket).choices();
         if(message.equalsIgnoreCase("select")){
             String courseId = Screen.getScreen(clientSocket).courseId();
             stringOut.println(message+","+courseId);
             printCourse();
-        }else{
+        }else if(message.equalsIgnoreCase("seeALL")){
             stringOut.println(message);
             printCourses();
+        }else if(message.equalsIgnoreCase("exit")){
+            stopConnection();
+        }else{
+            System.out.println("Please Select from provided List");
+            nextScreen();
         }
 
     }
@@ -76,12 +87,14 @@ public class Client {
         for (Course c : courses) {
             System.out.format("%15s%15s%15s%15s%n", c.getId(),c.getName(),c.getSection(),c.getResult());
         }
+        nextScreen();
     }
 
     private void printCourse() throws Exception{
         Course course = (Course) in.readObject();
         System.out.format("%15s%15s%15s%15s%15s%15s%15s%n", "ID","Name","Section","Sum","avg","max","min");
         System.out.format("%15s%15s%15s%15s%15s%15s%15s%n", course.getId(),course.getName(),course.getSection(),course.getSum(),course.getAvg(),course.getMin(),course.getMin());
+        nextScreen();
     }
 
 
@@ -89,5 +102,7 @@ public class Client {
         in.close();
         out.close();
         clientSocket.close();
+        stringOut.close();
+        stringOut.close();
     }
 }
