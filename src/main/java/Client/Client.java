@@ -93,7 +93,7 @@ public class Client {
     private void printCourse() throws Exception{
         Course course = (Course) in.readObject();
         System.out.format("%15s%15s%15s%15s%15s%15s%15s%n", "ID","Name","Section","Sum","avg","max","min");
-        System.out.format("%15s%15s%15s%15s%15s%15s%15s%n", course.getId(),course.getName(),course.getSection(),course.getSum(),course.getAvg(),course.getMin(),course.getMin());
+        System.out.format("%15s%15s%15s%15s%15s%15s%15s%n", course.getId(),course.getName(),course.getSection(),course.getSum(),course.getAvg(),course.getMin(),course.getMax());
         nextScreen();
     }
 

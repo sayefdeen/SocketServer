@@ -8,13 +8,13 @@ import java.util.UUID;
 public abstract class User implements Serializable {
 
     private  String id;
-    private  String name;
+    private  String email;
     private  String password;
 
     public User() {}
 
-    public User(String name, String password,boolean isNew) throws Exception {
-        this.name = name;
+    public User(String email, String password,boolean isNew) {
+        this.email = email;
         this.id = UUID.randomUUID().toString();
         if(isNew){
             this.password = bcryptPass(password);
@@ -23,9 +23,9 @@ public abstract class User implements Serializable {
         }
     }
 
-    public User(String id, String name, String password) {
+    public User(String id, String email, String password) {
         this.id = id;
-        this.name = name;
+        this.email = email;
         this.password = password;
     }
 
@@ -33,8 +33,8 @@ public abstract class User implements Serializable {
         return id.toString();
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -45,8 +45,8 @@ public abstract class User implements Serializable {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {

@@ -52,7 +52,7 @@ public class ThreadServer extends Thread {
                     Logger.getLogger().addLog("New User has been created " + user.getId());
                     break;
                 case "singIn":
-                    Students student = new StudentsService().getUser(user.getName());
+                    Students student = new StudentsService().getUser(user.getEmail());
                     if(student != null){
                         if(sService.checkPass(user.getPassword(),student.getPassword())){
                             stringOut.println("Next");
@@ -66,7 +66,7 @@ public class ThreadServer extends Thread {
                             stringOut.println("Wrong password/userName");
                         }
                     }else{
-                        Logger.getLogger().addLog("No user with this userName " + user.getName() );
+                        Logger.getLogger().addLog("No user with this userName " + user.getEmail() );
                         stringOut.println("No user with this userName");
                     }
                     break;

@@ -7,8 +7,8 @@ public class Students extends User {
         super();
     }
 
-    public Students(String name, String password,boolean isNew) throws Exception {
-        super(name, password,isNew);
+    public Students(String email, String password,boolean isNew) throws Exception {
+        super(email, password,isNew);
     }
 
     public Students(String uuid,String name, String password) {
