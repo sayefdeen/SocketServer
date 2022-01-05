@@ -2,6 +2,9 @@ package Server;
 
 import DAO.Course;
 import DAO.Students;
+import Log.Logger;
+import Services.CourseService;
+import Services.StudentsService;
 
 import java.io.*;
 import java.net.Socket;
@@ -34,57 +37,64 @@ public class ThreadServer extends Thread {
             }
 
         }catch (Exception e){
-            e.printStackTrace();
+            Logger.getLogger().addLog("Something went Bad!! " + e.getMessage());
         }
     }
 
-    private void choices(String order) throws Exception {
-        Students user = (Students) in.readObject();
-        Services.Students sService = new Services.Students();
-        switch (order){
-            case "register":
-                sService.add(user);
-                stringOut.println("Please register with your account");
-                break;
-            case "singIn":
-                Students student = new Services.Students().getUser(user.getName());
-                if(student != null){
-                    if(sService.checkPass(user.getPassword(),student.getPassword())){
-                        stringOut.println("Next");
-                        while(clientSocket.isConnected()){
-                            String message =  stringIn.readLine();
-                            studentChoices(message,student.getId());
-                        }
+    private void choices(String order) {
+        try {
+            Students user = (Students) in.readObject();
+            StudentsService sService = new StudentsService();
+            switch (order){
+                case "register":
+                    sService.add(user);
+                    stringOut.println("Please register with your account");
+                    Logger.getLogger().addLog("New User has been created " + user.getId());
+                    break;
+                case "singIn":
+                    Students student = new StudentsService().getUser(user.getName());
+                    if(student != null){
+                        if(sService.checkPass(user.getPassword(),student.getPassword())){
+                            stringOut.println("Next");
+                            while(clientSocket.isConnected()){
+                                String message =  stringIn.readLine();
+                                studentChoices(message,student.getId());
+                            }
 
+                        }else{
+                            Logger.getLogger().addLog("Wrong password/userName");
+                            stringOut.println("Wrong password/userName");
+                        }
                     }else{
-                        stringOut.println("Wrong password/userName");
+                        Logger.getLogger().addLog("No user with this userName " + user.getName() );
+                        stringOut.println("No user with this userName");
                     }
-                }else{
-                    stringOut.println("No user with this userName");
-                }
-                break;
+                    break;
+            }
+        }catch (Exception e){
+            Logger.getLogger().addLog("Something went Bad!! " + e.getMessage());
         }
+
     }
 
     private void studentChoices(String choice,String userId) throws Exception {
         String message = choice.split(",")[0];
         switch (message){
             case "seeALL":
-                ArrayList<Course> course = new Services.Course().getCourses(userId);
+                ArrayList<Course> course = new CourseService().getCourses(userId);
+                Logger.getLogger().addLog("Course for this students is requested " + userId );
                 out.writeObject(course);
                 break;
             case "select":
                 String courseId = choice.split(",")[1];
-                Course course1 = (Course) new Services.Course().get(courseId);
+                Course course1 = (Course) new CourseService().get(courseId);
+                Logger.getLogger().addLog("This course is being called " + courseId );
                 out.writeObject(course1);
                 break;
             case "exit":
+                Logger.getLogger().addLog("User Logout");
                 stringOut.println("exit");
                 break;
         }
-    }
-
-    private void closeClient(){
-
     }
 }

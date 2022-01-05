@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public interface CRUD<T> {
 
-    public void add(T object) throws Exception;
+    public void add(T object);
 
     public void update(int id) ;
 
